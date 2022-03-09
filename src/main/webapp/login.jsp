@@ -18,7 +18,7 @@
 	<body class="text-center">
 	    
 		<main class="form-signin">
-		  <form action="LoginServlet" method="post" novalidate="novalidate">
+		  <form action="${pageContext.request.contextPath}/LoginServlet" method="post" novalidate="novalidate">
 		  
 	  		<div class="alert alert-danger alert-dismissible fade show ${errorMessage==null?'d-none': ''}" role="alert">
 		 		 ${errorMessage}

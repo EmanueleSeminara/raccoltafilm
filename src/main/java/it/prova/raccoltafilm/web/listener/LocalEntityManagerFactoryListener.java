@@ -73,6 +73,10 @@ public class LocalEntityManagerFactoryListener implements ServletContextListener
 		if (ruoloServiceInstance.cercaPerDescrizioneECodice("Classic User", "ROLE_CLASSIC_USER") == null) {
 			ruoloServiceInstance.inserisciNuovo(new Ruolo("Classic User", "ROLE_CLASSIC_USER"));
 		}
+		
+		if (ruoloServiceInstance.cercaPerDescrizioneECodice("Visitor", "ROLE_VISITOR") == null) {
+			ruoloServiceInstance.inserisciNuovo(new Ruolo("Visitor", "ROLE_VISITOR"));
+		}
 
 		if (utenteServiceInstance.findByUsernameAndPassword("admin", "admin") == null) {
 			Utente admin = new Utente("admin", "admin", "Mario", "Rossi", new Date());

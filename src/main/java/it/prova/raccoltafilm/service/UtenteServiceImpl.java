@@ -1,5 +1,6 @@
 package it.prova.raccoltafilm.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -97,8 +98,13 @@ public class UtenteServiceImpl implements UtenteService {
 			// uso l'injection per il dao
 			utenteDAO.setEntityManager(entityManager);
 
+			utenteInstance.setDateCreated(new Date());
+
 			// eseguo quello che realmente devo fare
 			utenteDAO.insert(utenteInstance);
+			for (Ruolo ruoloItem : utenteInstance.getRuoli()) {
+				this.aggiungiRuolo(utenteInstance, ruoloItem);
+			}
 
 			entityManager.getTransaction().commit();
 		} catch (Exception e) {
@@ -191,6 +197,25 @@ public class UtenteServiceImpl implements UtenteService {
 			LocalEntityManagerFactoryListener.closeEntityManager(entityManager);
 		}
 
+	}
+
+	@Override
+	public List<Utente> findByExample(Utente example) throws Exception {
+		EntityManager entityManager = LocalEntityManagerFactoryListener.getEntityManager();
+
+		try {
+			// uso l'injection per il dao
+			utenteDAO.setEntityManager(entityManager);
+
+			// eseguo quello che realmente devo fare
+			return utenteDAO.findByExample(example);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			LocalEntityManagerFactoryListener.closeEntityManager(entityManager);
+		}
 	}
 
 }

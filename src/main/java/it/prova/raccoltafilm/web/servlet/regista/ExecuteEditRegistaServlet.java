@@ -32,7 +32,6 @@ public class ExecuteEditRegistaServlet extends HttpServlet {
 		// che per inserire) e faccio il binding dei parametri
 		Regista registaInstance = UtilityForm.createRegistaFromParams(nomeParam, cognomeParam, nickNameParam,
 				dataDiNascitaParam, sessoParam);
-		System.out.println(parametroIdDellRegistaDaModificare);
 		// Validazione
 		if (!UtilityForm.validateRegistaBean(registaInstance)
 				|| !NumberUtils.isCreatable(parametroIdDellRegistaDaModificare)) {

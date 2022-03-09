@@ -2,14 +2,22 @@ package it.prova.raccoltafilm.utility;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import it.prova.raccoltafilm.model.Film;
 import it.prova.raccoltafilm.model.Regista;
+import it.prova.raccoltafilm.model.Ruolo;
 import it.prova.raccoltafilm.model.Sesso;
+import it.prova.raccoltafilm.model.Utente;
 
 public class UtilityForm {
 
@@ -24,11 +32,6 @@ public class UtilityForm {
 
 	public static boolean validateRegistaBean(Regista registaToBeValidated) {
 		// prima controlliamo che non siano vuoti i parametri
-		System.out.println(StringUtils.isBlank(registaToBeValidated.getNome()));
-		System.out.println(StringUtils.isBlank(registaToBeValidated.getCognome()));
-		System.out.println(StringUtils.isBlank(registaToBeValidated.getNickName()));
-		System.out.println(registaToBeValidated.getSesso() == null);
-		System.out.println(registaToBeValidated.getDataDiNascita() == null);
 		if (StringUtils.isBlank(registaToBeValidated.getNome())
 				|| StringUtils.isBlank(registaToBeValidated.getCognome())
 				|| StringUtils.isBlank(registaToBeValidated.getNickName()) || registaToBeValidated.getSesso() == null
@@ -74,4 +77,72 @@ public class UtilityForm {
 			return null;
 		}
 	}
+
+	public static Utente createUtenteFromParams(String nomeInputParam, String cognomeInputParam,
+			String usernameInputParam, String dataCreazioneStringParam) {
+
+		Utente result = new Utente(usernameInputParam);
+		result.setNome(StringUtils.isBlank(nomeInputParam) ? null : nomeInputParam);
+		result.setCognome(StringUtils.isBlank(cognomeInputParam) ? null : cognomeInputParam);
+		result.setDateCreated(parseDateArrivoFromString(dataCreazioneStringParam));
+		// result.setRuoli(ruoliInputParam != null && !ruoliInputParam.isEmpty() ?
+		// ruoliInputParam : null);
+		return result;
+	}
+
+	public static Utente createUtenteFromParams(String nomeInputParam, String cognomeInputParam,
+			String usernameInputParam, String dataCreazioneStringParam, String passwordInputParam,
+			String[] ruoliInputParam) {
+		Set<Ruolo> ruoliUtente = new HashSet<Ruolo>();
+		Utente result = new Utente(usernameInputParam);
+		result.setPassword(StringUtils.isBlank(passwordInputParam) ? null : passwordInputParam);
+		result.setNome(StringUtils.isBlank(nomeInputParam) ? null : nomeInputParam);
+		result.setCognome(StringUtils.isBlank(cognomeInputParam) ? null : cognomeInputParam);
+
+		if (ruoliInputParam != null) {
+			for (String ruolo : ruoliInputParam) {
+				if (NumberUtils.isCreatable(ruolo)) {
+					Ruolo ruoloDaInserire = new Ruolo();
+					ruoloDaInserire.setId(Long.parseLong(ruolo));
+					ruoliUtente.add(ruoloDaInserire);
+				}
+			}
+
+			result.setRuoli(ruoliUtente);
+		}
+
+		// result.setDateCreated(parseDateArrivoFromString(dataCreazioneStringParam));
+		// result.setRuoli(ruoliInputParam != null && !ruoliInputParam.isEmpty() ?
+		// ruoliInputParam : null);
+		return result;
+	}
+
+	public static boolean validateUtenteBean(Utente utenteToBeValidated) {
+		// prima controlliamo che non siano vuoti i parametri
+		if (StringUtils.isBlank(utenteToBeValidated.getNome()) || StringUtils.isBlank(utenteToBeValidated.getCognome())
+				|| StringUtils.isBlank(utenteToBeValidated.getUsername())
+				|| StringUtils.isBlank(utenteToBeValidated.getPassword())) {
+			return false;
+		}
+		return true;
+	}
+
+	public static Map<Ruolo, Boolean> buildCheckedRolesFromRolesAlreadyInUtente(List<Ruolo> listaTotaleRuoli,
+			Set<Ruolo> listaRuoliPossedutiDaUtente) {
+		Map<Ruolo, Boolean> result = new TreeMap<>();
+
+		// converto array di ruoli in List di Long
+		List<Long> ruoliConvertitiInIds = new ArrayList<>();
+		for (Ruolo ruoloDiUtenteItem : listaRuoliPossedutiDaUtente != null ? listaRuoliPossedutiDaUtente
+				: new ArrayList<Ruolo>()) {
+			ruoliConvertitiInIds.add(ruoloDiUtenteItem.getId());
+		}
+		System.out.println("RUOLO DENTRO IL METODO: " + ruoliConvertitiInIds);
+		for (Ruolo ruoloItem : listaTotaleRuoli) {
+			result.put(ruoloItem, ruoliConvertitiInIds.contains(ruoloItem.getId()));
+		}
+
+		return result;
+	}
+
 }

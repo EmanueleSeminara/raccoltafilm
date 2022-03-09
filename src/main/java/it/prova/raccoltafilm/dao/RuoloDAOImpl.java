@@ -18,8 +18,7 @@ public class RuoloDAOImpl implements RuoloDAO {
 
 	@Override
 	public List<Ruolo> list() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return entityManager.createQuery("from Ruolo", Ruolo.class).getResultList();
 	}
 
 	@Override
@@ -54,9 +53,8 @@ public class RuoloDAOImpl implements RuoloDAO {
 	public Ruolo findByDescrizioneAndCodice(String descrizione, String codice) throws Exception {
 		TypedQuery<Ruolo> query = entityManager
 				.createQuery("select r from Ruolo r where r.descrizione=?1 and r.codice=?2", Ruolo.class)
-				.setParameter(1, descrizione)
-				.setParameter(2, codice);
-		
+				.setParameter(1, descrizione).setParameter(2, codice);
+
 		return query.getResultStream().findFirst().orElse(null);
 	}
 

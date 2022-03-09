@@ -49,7 +49,6 @@ public class LoginServlet extends HttpServlet {
 			destinazione = "login.jsp";
 			request.setAttribute("errorMessage", "Attenzione! Si è verificato un errore.");
 		}
-
 		request.getRequestDispatcher(destinazione).forward(request, response);
 
 	}

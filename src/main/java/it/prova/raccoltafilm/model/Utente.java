@@ -59,7 +59,11 @@ public class Utente {
 		this.cognome = cognome;
 		this.dateCreated = dateCreated;
 	}
-	
+
+	public Utente(String username) {
+		this.username = username;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -130,6 +134,13 @@ public class Utente {
 				return true;
 		}
 		return false;
+	}
+
+	@Override
+	public String toString() {
+		return "Utente [id=" + id + ", username=" + username + ", password=" + password + ", nome=" + nome
+				+ ", cognome=" + cognome + ", dateCreated=" + dateCreated + ", stato=" + stato + ", ruoli=" + ruoli
+				+ "]";
 	}
 
 }
