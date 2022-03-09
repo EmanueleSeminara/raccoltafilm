@@ -17,6 +17,7 @@ import it.prova.raccoltafilm.model.Film;
 import it.prova.raccoltafilm.model.Regista;
 import it.prova.raccoltafilm.model.Ruolo;
 import it.prova.raccoltafilm.model.Sesso;
+import it.prova.raccoltafilm.model.StatoUtente;
 import it.prova.raccoltafilm.model.Utente;
 
 public class UtilityForm {
@@ -92,12 +93,13 @@ public class UtilityForm {
 
 	public static Utente createUtenteFromParams(String nomeInputParam, String cognomeInputParam,
 			String usernameInputParam, String dataCreazioneStringParam, String passwordInputParam,
-			String[] ruoliInputParam) {
+			String[] ruoliInputParam, StatoUtente stato) {
 		Set<Ruolo> ruoliUtente = new HashSet<Ruolo>();
 		Utente result = new Utente(usernameInputParam);
 		result.setPassword(StringUtils.isBlank(passwordInputParam) ? null : passwordInputParam);
 		result.setNome(StringUtils.isBlank(nomeInputParam) ? null : nomeInputParam);
 		result.setCognome(StringUtils.isBlank(cognomeInputParam) ? null : cognomeInputParam);
+		result.setStato(stato != null ? stato : result.getStato());
 
 		if (ruoliInputParam != null) {
 			for (String ruolo : ruoliInputParam) {
@@ -137,7 +139,6 @@ public class UtilityForm {
 				: new ArrayList<Ruolo>()) {
 			ruoliConvertitiInIds.add(ruoloDiUtenteItem.getId());
 		}
-		System.out.println("RUOLO DENTRO IL METODO: " + ruoliConvertitiInIds);
 		for (Ruolo ruoloItem : listaTotaleRuoli) {
 			result.put(ruoloItem, ruoliConvertitiInIds.contains(ruoloItem.getId()));
 		}

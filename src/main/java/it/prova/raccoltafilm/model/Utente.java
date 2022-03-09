@@ -129,6 +129,7 @@ public class Utente {
 	}
 
 	public boolean isAdmin() {
+
 		for (Ruolo ruoloItem : ruoli) {
 			if (ruoloItem.getCodice().equals(Ruolo.ROLE_ADMIN))
 				return true;
